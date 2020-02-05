@@ -49,7 +49,8 @@ def updateTaxiTrips(communities, taxiTrips, show = False):
     if show:
         showGraph(communities)
 
-def showGraph(communities, showTaxiTrips=True, save=False, cmap = 2):
+def showGraph(communities, showTaxiTrips=True, save=True, cmap = 2):
+    # Color stuff
     if cmap == 0:
         cmap = "OrRd"
     elif cmap == 1:
@@ -77,9 +78,18 @@ def showGraph(communities, showTaxiTrips=True, save=False, cmap = 2):
         plt.show()
 
 
-if __name__ == "__main__":
+def mapGenerator(taxiTrips):
     communities = loadCommunities()
-    
+
+    # Check if there is one map to generate or several
+    if (type[0] == int):
+        updateTaxiTrips(communities, taxiTrips, save=False)
+
+    else:
+        for taxiTripsMap in taxiTrips:
+            updateTaxiTrips(communities, taxiTripsMap, save=False)
+
+
+if __name__ == "__main__":
     taxiTrips = np.random.randint(1,50,77)
-    print(taxiTrips)
-    updateTaxiTrips(communities, taxiTrips, show=True)
+    mapGenerator(taxiTrips)
