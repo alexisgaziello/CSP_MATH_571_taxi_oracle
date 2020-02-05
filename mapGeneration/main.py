@@ -41,15 +41,14 @@ def loadCommunities(taxiTrips=None):
 
     return communities
 
-def updateTaxiTrips(communities, taxiTrips, show = False):
+def updateTaxiTrips(communities, taxiTrips, saveFig=True):
 
     for i in range(0,len(communities)):
         communities.loc[communities.AREA_NUMBE == i+1, 'TAXI_TRIPS'] = taxiTrips[i]
 
-    if show:
-        showGraph(communities)
+    showGraph(communities, saveFig=saveFig)
 
-def showGraph(communities, showTaxiTrips=True, save=True, cmap = 2):
+def showGraph(communities, showTaxiTrips=True, saveFig=True, cmap = 2):
     # Color stuff
     if cmap == 0:
         cmap = "OrRd"
@@ -70,7 +69,7 @@ def showGraph(communities, showTaxiTrips=True, save=True, cmap = 2):
             plt.annotate(s=row['TAXI_TRIPS'],
                 xy=row['CENTER'], horizontalalignment='center')
 
-    if save:
+    if saveFig:
         print("\n\nERROR: SPECIFIY PATH BEFORE TRYING TO SAVE\n\n")
         return 
         plt.savefig("PATH")
@@ -82,14 +81,15 @@ def mapGenerator(taxiTrips):
     communities = loadCommunities()
 
     # Check if there is one map to generate or several
-    if (type[0] == int):
-        updateTaxiTrips(communities, taxiTrips, save=False)
+    typeOfArg = type(taxiTrips[0])
+    if (typeOfArg == int or typeOfArg == np.int64):
+        updateTaxiTrips(communities, taxiTrips, saveFig=False)
 
     else:
         for taxiTripsMap in taxiTrips:
-            updateTaxiTrips(communities, taxiTripsMap, save=False)
+            updateTaxiTrips(communities, taxiTripsMap, saveFig=False)
 
 
 if __name__ == "__main__":
-    taxiTrips = np.random.randint(1,50,77)
+    taxiTrips = np.random.randint(1,50,77)    
     mapGenerator(taxiTrips)
