@@ -8,8 +8,17 @@ import numpy as np
 # Load coordinates
 def loadCommunities(taxiTrips=None):
     path = os.path.realpath(__file__)
-    while path[-1] != '/':
-        path = path[:-2]
+    if os.name == 'nt':
+        while path[-1] != '\':
+            path = path[:-2]
+    
+    elif os.name == 'posix':
+        while path[-1] != '/':
+            path = path[:-2]
+    
+    else:
+        print(f'What is this OS? {os.name}')
+
     communities = pandas.read_csv(path + "CommAreas.csv", header=0)
     
     communities["TAXI_TRIPS"] = 0
