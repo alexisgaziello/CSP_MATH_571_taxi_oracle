@@ -55,14 +55,15 @@ def loadCommunities(taxiTrips=None):
 
     return communities
 
-def updateTaxiTrips(communities, taxiTrips, saveFig=True, cmap = 2):
+def updateTaxiTrips(communities, taxiTrips, **kwargs):
+    # TODO ARGS
 
     for i in range(0,len(communities)):
         communities.loc[communities.AREA_NUMBE == i+1, 'TAXI_TRIPS'] = taxiTrips[i]
 
-    showGraph(communities, saveFig=saveFig, cmap=cmap)
+    showGraph(communities, **kwargs)
 
-def showGraph(communities, showTaxiTrips=True, saveFig=True, cmap = 2):
+def showGraph(communities, showTaxiTrips=True, saveFig='', cmap = 2, figsize=(18,18)):
     # Color stuff
     if cmap == 0:
         cmap = "OrRd"
@@ -76,7 +77,7 @@ def showGraph(communities, showTaxiTrips=True, saveFig=True, cmap = 2):
         cmap = "BuPu"
 
     # FIGURE SIZE
-    fig, ax = plt.subplots(1, 1, figsize=(18,18))
+    fig, ax = plt.subplots(1, 1, figsize=figsize)
     communities.plot(column='TAXI_TRIPS', ax=ax, legend=True, cmap=cmap)
 
     if showTaxiTrips:
@@ -84,27 +85,26 @@ def showGraph(communities, showTaxiTrips=True, saveFig=True, cmap = 2):
             plt.annotate(s= f"{row['AREA_NUMBE']}={row['TAXI_TRIPS']}",
                 xy=row['CENTER'], horizontalalignment='center')
 
-    if saveFig:
-        print("\n\nERROR: SPECIFIY PATH BEFORE TRYING TO SAVE\n\n")
-        return 
-        plt.savefig("PATH")
+    if saveFig != '':
+        print(f"Saving figure to: {saveFig}")
+        plt.savefig(saveFig)
     else:
         plt.show()
 
 
-def mapGenerator(taxiTrips, cmap = 2):
+def mapGenerator(taxiTrips, **kwargs):
     communities = loadCommunities()
 
     # Check if there is one map to generate or several
     typeOfArg = type(taxiTrips[0])
     if (typeOfArg == int or typeOfArg == np.int64):
-        updateTaxiTrips(communities, taxiTrips, saveFig=False, cmap=cmap)
+        updateTaxiTrips(communities, taxiTrips, **kwargs)
 
     else:
         for taxiTripsMap in taxiTrips:
-            updateTaxiTrips(communities, taxiTripsMap, saveFig=False, cmap=cmap)
+            updateTaxiTrips(communities, taxiTripsMap, **kwargs)
 
-def mapGeneratorFromDict(myDict, cmap = 2):
+def mapGeneratorFromDict(myDict, **kwargs):
     array = []
     counter = 1
     while(len(array) < 77):
@@ -116,7 +116,7 @@ def mapGeneratorFromDict(myDict, cmap = 2):
         
         counter += 1
 
-    mapGenerator(array, cmap=cmap)
+    mapGenerator(array, **kwargs)
 
 if __name__ == "__main__":
     taxiTrips = np.random.randint(1,50,77)    
