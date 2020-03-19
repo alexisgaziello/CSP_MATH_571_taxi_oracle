@@ -9,3 +9,11 @@ That way the taxis business owners will be able to place the taxis in the correc
 - Taxi transportation data
 - Weather data
 - CTA public transportation data
+
+
+### Repo Structure
+
+- src: Scripts and Notebooks
+- data: Datasets
+- reports: Milestones and Final Report
+- 
