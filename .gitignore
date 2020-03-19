@@ -1,5 +1,7 @@
 .DS_Store
 .ipynb_checkpoints
 data/*.csv
- __pycache__/
+src/mapGeneration/__pycache__/
 Icon^M
+*/Icon^M
+*/.DS_Store
