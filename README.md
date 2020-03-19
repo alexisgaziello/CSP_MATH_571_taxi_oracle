@@ -16,4 +16,3 @@ That way the taxis business owners will be able to place the taxis in the correc
 - src: Scripts and Notebooks
 - data: Datasets
 - reports: Milestones and Final Report
-- 
