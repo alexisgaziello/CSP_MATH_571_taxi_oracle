@@ -8,8 +8,9 @@ import numpy as np
 # Load coordinates
 def loadCommunities(taxiTrips=None):
     path = os.path.realpath(__file__)
+
     if os.name == 'nt':
-        while path[-1] != '\':
+        while path[-1] != '\\':
             path = path[:-2]
     
     elif os.name == 'posix':
