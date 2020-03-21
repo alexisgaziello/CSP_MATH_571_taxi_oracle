@@ -56,8 +56,6 @@ def loadCommunities(taxiTrips=None):
     return communities
 
 def updateTaxiTrips(communities, taxiTrips, **kwargs):
-    # TODO ARGS
-
     for i in range(0,len(communities)):
         communities.loc[communities.AREA_NUMBE == i+1, 'TAXI_TRIPS'] = taxiTrips[i]
 
