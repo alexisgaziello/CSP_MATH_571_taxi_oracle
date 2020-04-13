@@ -4,6 +4,8 @@ from geopandas import GeoDataFrame
 import shapely
 import matplotlib. pyplot as plt
 import numpy as np
+from io import BytesIO
+from base64 import b64encode
 
 # Load coordinates
 def loadCommunities(taxiTrips=None):
@@ -59,9 +61,9 @@ def updateTaxiTrips(communities, taxiTrips, **kwargs):
     for i in range(0,len(communities)):
         communities.loc[communities.AREA_NUMBE == i+1, 'TAXI_TRIPS'] = taxiTrips[i]
 
-    showGraph(communities, **kwargs)
+    return showGraph(communities, **kwargs)
 
-def showGraph(communities, showTaxiTrips=True, saveFig='', cmap = 2, figsize=(18,18)):
+def showGraph(communities, showTaxiTrips=True, saveFig='', cmap = 2, figsize=(18,18), saveByte=False):
     # Color stuff
     if cmap == 0:
         cmap = "OrRd"
@@ -74,6 +76,9 @@ def showGraph(communities, showTaxiTrips=True, saveFig='', cmap = 2, figsize=(18
     else:
         cmap = "BuPu"
 
+    if saveByte:
+        plt.switch_backend('Agg')
+    
     # FIGURE SIZE
     fig, ax = plt.subplots(1, 1, figsize=figsize)
     communities.plot(column='TAXI_TRIPS', ax=ax, legend=True, cmap=cmap)
@@ -86,6 +91,14 @@ def showGraph(communities, showTaxiTrips=True, saveFig='', cmap = 2, figsize=(18
     if saveFig != '':
         print(f"Saving figure to: {saveFig}")
         plt.savefig(saveFig)
+
+    elif saveByte:
+        figfile = BytesIO()
+        plt.savefig(figfile, format='png')
+        figfile.seek(0)
+        figdata_png = b64encode(figfile.getvalue())
+        return figdata_png
+
     else:
         plt.show()
 
@@ -96,11 +109,11 @@ def mapGenerator(taxiTrips, **kwargs):
     # Check if there is one map to generate or several
     typeOfArg = type(taxiTrips[0])
     if (typeOfArg == int or typeOfArg == np.int64):
-        updateTaxiTrips(communities, taxiTrips, **kwargs)
+        return updateTaxiTrips(communities, taxiTrips, **kwargs)
 
     else:
         for taxiTripsMap in taxiTrips:
-            updateTaxiTrips(communities, taxiTripsMap, **kwargs)
+            return updateTaxiTrips(communities, taxiTripsMap, **kwargs)
 
 def mapGeneratorFromDict(myDict, **kwargs):
     array = []
@@ -114,7 +127,7 @@ def mapGeneratorFromDict(myDict, **kwargs):
         
         counter += 1
 
-    mapGenerator(array, **kwargs)
+    return mapGenerator(array, **kwargs)
 
 if __name__ == "__main__":
     taxiTrips = np.random.randint(1,50,77)    
