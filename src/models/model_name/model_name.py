@@ -9,6 +9,9 @@ pickle.dump(model, open('model_name.pkl','wb'))
 import # necessary libraries to load the model for example import skleanr.whatever.
 
 def model_name_Load(): # NO CHANGE
+    # check you have the necessary libraries to use the model, if there is need for any
+    # maybe call predict or something
+    # after you can delete everything inside this function and just leave the pickle.load
     return pickle.load(open('model.pkl','rb')) # NO CHANGE
 
 def model_name_TransformDataToX(data): # NO CHANGE
