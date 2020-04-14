@@ -2,6 +2,7 @@ import pickle # NO CHANGE
 
 # To save model:
 # Calculate it and then save it with:
+# you don't have to call the following gunction here. call it in your script
 pickle.dump(model, open('model_name.pkl','wb'))
 
 
