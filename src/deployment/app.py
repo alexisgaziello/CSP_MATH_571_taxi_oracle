@@ -14,6 +14,8 @@ else:
 
 path = os.getcwd()
 pathToSrc =  path[:-len(f'deployment')]
+pathToGDrive =  path[:-len(f'Code{sep}src{sep}project_CSP_MATH_571')]
+path_datasets = pathToGDrive + f'DataSets{sep}trips{sep}'
 
 #MapGenerator Lib
 path_maps = pathToSrc + f'{sep}mapGeneration{sep}mapGeneration.py'
