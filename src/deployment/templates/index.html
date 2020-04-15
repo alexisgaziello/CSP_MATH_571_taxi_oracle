@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>Taxi Oracle</title>
+  <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Hind:300' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  
+</head>
+
+<body style="background:white;">
+ <div class="login">
+	<h1>The Taxi Oracle</h1>
+
+     <!-- Main Input For Receiving Query to our ML -->
+    <form action="{{ url_for('predict')}}"method="post">
+        <input type="date" id="trip" name="trip" value="2020-04-21"
+                min="2020-04-20" max="2022-12-31">
+
+        <input type="time" id="hour" name="hour" value="16:00" min="00" max="23" required>
+
+        <button type="submit" class="btn btn-primary btn-block btn-large">Predict Taxi trips</button>
+    </form>
+
+ </div>
+
+
+</body>
+</html>
