@@ -62,9 +62,6 @@ rf=model_name_Load()
 df.head()
 
 
-# In[40]:
-
-
 def transformX(date):
 
     dftest = dftest[dftest['trip_start_timestamp'].str.contains(date)] 
