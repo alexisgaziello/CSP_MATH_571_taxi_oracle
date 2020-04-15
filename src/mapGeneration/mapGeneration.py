@@ -63,6 +63,7 @@ def updateTaxiTrips(communities, taxiTrips, **kwargs):
 
     return showGraph(communities, **kwargs)
 
+
 def showGraph(communities, showTaxiTrips=True, saveFig='', cmap = 2, figsize=(18,18), saveByte=False):
     # Color stuff
     if cmap == 0:
@@ -78,6 +79,17 @@ def showGraph(communities, showTaxiTrips=True, saveFig='', cmap = 2, figsize=(18
 
     if saveByte:
         plt.switch_backend('Agg')
+    elif plt.get_backend() == 'Agg':
+        try:
+            plt.switch_backend('TkAgg')
+        except:
+            try:
+                plt.switch_backend('WX')
+            except:
+                try:
+                    plt.switch_backend('QTAgg')
+                except:
+                    print("Error with backend")
     
     # FIGURE SIZE
     fig, ax = plt.subplots(1, 1, figsize=figsize)
