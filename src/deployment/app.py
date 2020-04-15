@@ -2,6 +2,7 @@ import numpy as np
 from flask import Flask, request, jsonify, render_template
 import pickle
 import importlib.util, os
+import pandas as pd
 
 
 # Get current path from where script is executed
@@ -15,7 +16,10 @@ else:
 path = os.getcwd()
 pathToSrc =  path[:-len(f'deployment')]
 pathToGDrive =  path[:-len(f'Code{sep}src{sep}project_CSP_MATH_571')]
-path_datasets = pathToGDrive + f'DataSets{sep}trips{sep}'
+path_datasets = pathToGDrive + f'DataSets{sep}'
+
+pathToDataSet = pathToGDrive + f'DataSets{sep}' + dataSetName
+df = pd.read_csv('dataset_final.csv')
 
 #MapGenerator Lib
 path_maps = pathToSrc + f'{sep}mapGeneration{sep}mapGeneration.py'
@@ -32,19 +36,28 @@ def home():
     return render_template('index.html')
 
 @app.route('/predict',methods=['POST'])
+
+
 def predict():
 
-    # Get values from form.
-    # for  x in request.form.values:
-        
-    # int_features = [x for x in request.form.values()]
 
+    # Get values from form.
+    date = getDate from request.form.values:
+
+    row = df[date, ]
+        
     # Transform to array X
-    # final_features = [np.array(int_features)]
+    X = model_name_TransformDataToX(row)
+
 
     # Predict
-    # prediction = model.predict(final_features)
-    prediction = np.random.randint(1,200,77)
+    model = model_name_Load()
+    Y = model.predict(X)
+    #prediction = np.random.randint(1,200,77)
+    # Create map
+
+    result = model_name_TransformYToResult(Y)
+
     # Create map
     result = mp.mapGenerator(prediction, saveByte=True)    
 

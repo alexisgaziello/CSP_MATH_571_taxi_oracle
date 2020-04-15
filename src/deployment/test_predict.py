@@ -29,15 +29,6 @@ df.drop(columns=['trip_start_timestamp.1','pickup_community_area.1','Trips'],inp
 # In[509]:
 
 
-def model_name_Load(): # NO CHANGE
-    # check you have the necessary libraries to use the model, if there is need for any
-    # maybe call predict or something
-    # after you can delete everything inside this function and just leave the pickle.load
-    # Load the model from the file 
-    rf = joblib.load('filename.pkl')  
-    return rf
-
-
 # In[510]:
 
 
@@ -112,14 +103,14 @@ x=transformX(df,dftest,datetime)
 # In[514]:
 
 
-def model_name_TransformYToResult(x): # NO CHANGE
-    # Perform neccesary transformations. Result  is an array of size 77 in which each item
+def model_name_TransformYToResult(Y): # NO CHANGE
+    # Perform neccesary transformations.
+    # Result  is an array of size 77 in which each item
     #  it's the value of taxi trips for each community in order 
     # (meaning first value is for community 1, second for community 2, etc) 
     # OR a dictionary with the key as the community
     #  and the value the predicted trips.
-    result=rf.predict(x)
-    result=result.astype(int)
+    result=Y
     return result
 
 
