@@ -1,7 +1,7 @@
 import numpy as np
 from flask import Flask, request, jsonify, render_template
 import pickle
-import importlib.util, os
+import importlib.util, os, sys
 import pandas as pd
 import joblib
 
@@ -13,13 +13,14 @@ elif os.name == 'posix':
 else:
     print(f'What is this OS? {os.name}')
 
-path = os.getcwd()
+path = os.path.dirname(sys.argv[0])
 pathToSrc =  path[:path.find('src')+3]
 pathToGDrive =  path[:path.find('Code')]
 path_datasets = pathToGDrive + f'DataSets{sep}'
 
-pathToDataSet = pathToGDrive + f'DataSets{sep}' + 'dataset_final.csv'
+pathToDataSet = pathToGDrive + f'DataSets{sep}data_prediction{sep}' + 'pred.csv'
 df = pd.read_csv(pathToDataSet)
+df = df.drop(columns=['Unnamed: 0'],axis=1)
 
 # Models
 
@@ -50,11 +51,11 @@ def predict():
 
 
     # Get values from form.
-    date = "2017-01-16 00:00:00"#getDate from request.form.values:
-    row = df[df['trip_start_timestamp'] == date].iloc[0,]
+    date = "2019-12-16 16:00:00"#getDate from request.form.values:
+    #row = df[df['trip_start_timestamp'] == date].iloc[0,]
         
     # Transform to array X
-    X = randomForest.TransformDataToX(row)
+    X = randomForest.TransformDataToX(df, date)
 
 
     # Predict
@@ -62,7 +63,7 @@ def predict():
     #prediction = np.random.randint(1,200,77)
     # Create map
 
-    result = randomForest.TransformYToResult(Y)
+    prediction = randomForest.TransformYToResult(Y)
 
     # Create map
     result = mp.mapGenerator(prediction, saveByte=True)    
