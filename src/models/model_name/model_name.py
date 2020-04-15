@@ -3,12 +3,12 @@ import joblib # NO CHANGE
 # To save model:
 # Calculate it and then save it with:
 # you don't have to call the following gunction here. call it in your script
-pickle.dump(model, open('model_name.pkl','wb'))
+joblib.dump(model, open('model_name.pkl','wb'))
 
 
 import # necessary libraries to load the model for example import skleanr.whatever.
 
-def TransformDataToX(data): # NO CHANGE
+def TransformDataToX(df, date): # NO CHANGE
     #Perform calculations. Data is a row of the selected date.
     return X # NO CHANGE
 
