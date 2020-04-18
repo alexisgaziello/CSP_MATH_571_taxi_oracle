@@ -93,7 +93,7 @@ def showGraph(communities, showTaxiTrips=True, saveFig='', cmap = 2, figsize=(18
     
     # FIGURE SIZE
     fig, ax = plt.subplots(1, 1, figsize=figsize)
-    communities.plot(column='TAXI_TRIPS', ax=ax, legend=True, cmap=cmap)
+    communities.plot(column='TAXI_TRIPS', ax=ax, legend=False, cmap=cmap)
 
     if showTaxiTrips:
         for idx, row in communities.iterrows():
