@@ -109,14 +109,17 @@ def showGraph(communities, showTaxiTrips=True, saveFig='', cmap = 2, figsize=(18
         plt.savefig(figfile, format='png')
         figfile.seek(0)
         figdata_png = b64encode(figfile.getvalue())
+        figdata_png= str(figdata_png)[2:-1]
         return figdata_png
 
     else:
         plt.show()
 
 
-def mapGenerator(taxiTrips, **kwargs):
-    communities = loadCommunities()
+def mapGenerator(taxiTrips, communities = None, **kwargs):
+    
+    if communities is None:
+        communities = loadCommunities()
 
     # Check if there is one map to generate or several
     typeOfArg = type(taxiTrips[0])
