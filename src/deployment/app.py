@@ -4,6 +4,7 @@ import pickle
 import importlib.util, os, sys
 import pandas as pd
 import joblib
+from keras.models import model_from_json
 
 # Get current path from where script is executed
 if os.name == 'nt':
@@ -33,23 +34,39 @@ df = pd.read_csv(pathToDataSet)
 
 # Models
 
-# Linear Regression
+# Random Forest
+print("Loading Random Forest...")
 
-# RandomForest 
 # model_randomForest = joblib.load(path_datasets+"/model/randomforest.pkl")
 
 # path_to_model = pathToSrc + f'{sep}models{sep}/randomForest/randomForest.py'
 # spec = importlib.util.spec_from_file_location("randomForest", path_to_model)
 # randomForest = importlib.util.module_from_spec(spec)
 # spec.loader.exec_module(randomForest)
+# Regression
+print("Loading Regression...")
+
+# Gradient BR
+print("Loading Gradient BR...")
+
 
 # Neural Net
-path_to_model = pathToSrc + f'{sep}models{sep}neuralNet{sep}neural_network.py'
-spec = importlib.util.spec_from_file_location("neuralNet", path_to_model)
+print("Loading Neural Net...")
+# Model
+pathNeuralNet = pathToSrc + f'{sep}models{sep}neuralNet{sep}'
+
+# load json and create model
+json_file = open(pathNeuralNet + 'model_neural_network.json', 'r')
+loaded_model_json = json_file.read()
+json_file.close()
+model_neural_network = model_from_json(loaded_model_json)
+# load weights into new model
+model_neural_network.load_weights(pathNeuralNet + "model_neural_network.h5")
+
+# Bindings
+spec = importlib.util.spec_from_file_location("neuralNet", pathNeuralNet+'neural_network.py')
 neuralNet = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(neuralNet)
-
-# Ensambling
 
 app = Flask(__name__)
 
@@ -69,36 +86,41 @@ def predict():
     hour = request.form.get('hour')
     seconds = '00'
     date = day + ' ' + hour + ':' + seconds
+    
+    print(f"Predicting for :{date}")
 
-    # Real Y (values)
-    real = df.loc[df.trip_start_timestamp == "2019-11-01 00:00:00"]['Trips']
-    real_img = mp.mapGenerator(real, communities=communities, saveByte=True) 
-        
     # Transform to array X
     # X = randomForest.TransformDataToX(df, date)
 
-
     # Predict
-    #Y = model_randomForest.predict(X)
-    #prediction = np.random.randint(1,200,77)
-    # Create map
-
     #prediction = randomForest.TransformYToResult(Y)
 
     # Create map
     #result = mp.mapGenerator(prediction, communities=communities, saveByte=True)    
 
-    # Neural Net
-    # X = neuralNet.TransformDataToX(df, date)
-    # Y = model_neural_network.predict(X)
-    # prediction = neuralNet.TransformYToResult(Y)
-    # neuralNet_img = mp.mapGenerator(prediction, communities=communities, saveByte=True)
+    # Real Y (values)
+    real = df.loc[df.trip_start_timestamp == "2019-11-01 00:00:00"]['Trips']
+    real_img = mp.mapGenerator(real, communities=communities, saveByte=True) 
 
+    # Random Forest
+
+    # Regression
+
+    # Gradient BR
+
+    # Neural Net
+    X = neuralNet.TransformDataToX(df, date)
+    Y = model_neural_network.predict(X)
+    prediction = neuralNet.TransformYToResult(Y)
+    neuralNet_img = mp.mapGenerator(prediction, communities=communities, saveByte=True)
+
+    # Random values
+    # np.random.randint(1,200,77)
     result = real_img
     regression_img=result
     randomForest_img = result
     ensambling_img = result
-    neuralNet_img = result
+    # neuralNet_img = result
 
     return render_template('predict.html'
         , real=real_img
