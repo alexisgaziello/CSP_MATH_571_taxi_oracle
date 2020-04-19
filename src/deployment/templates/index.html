@@ -17,8 +17,8 @@
 
      <!-- Main Input For Receiving Query to our ML -->
     <form action="{{ url_for('predict')}}"method="post">
-        <input type="date" id="trip" name="trip" value="2020-04-21"
-                min="2020-04-20" max="2022-12-31">
+        <input type="date" id="day" name="day" value="2019-11-15"
+                min="2019-11-01" max="2019-11-30">
 
         <input type="time" id="hour" name="hour" value="16:00" min="00" max="23" required>
 

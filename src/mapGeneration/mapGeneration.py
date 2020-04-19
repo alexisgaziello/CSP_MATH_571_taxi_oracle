@@ -93,7 +93,7 @@ def showGraph(communities, showTaxiTrips=True, saveFig='', cmap = 2, figsize=(18
     
     # FIGURE SIZE
     fig, ax = plt.subplots(1, 1, figsize=figsize)
-    communities.plot(column='TAXI_TRIPS', ax=ax, legend=True, cmap=cmap)
+    communities.plot(column='TAXI_TRIPS', ax=ax, legend=False, cmap=cmap)
 
     if showTaxiTrips:
         for idx, row in communities.iterrows():
@@ -109,14 +109,17 @@ def showGraph(communities, showTaxiTrips=True, saveFig='', cmap = 2, figsize=(18
         plt.savefig(figfile, format='png')
         figfile.seek(0)
         figdata_png = b64encode(figfile.getvalue())
+        figdata_png= str(figdata_png)[2:-1]
         return figdata_png
 
     else:
         plt.show()
 
 
-def mapGenerator(taxiTrips, **kwargs):
-    communities = loadCommunities()
+def mapGenerator(taxiTrips, communities = None, **kwargs):
+    
+    if communities is None:
+        communities = loadCommunities()
 
     # Check if there is one map to generate or several
     typeOfArg = type(taxiTrips[0])
