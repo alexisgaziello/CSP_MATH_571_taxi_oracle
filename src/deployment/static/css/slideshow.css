@@ -16,7 +16,7 @@
 .prev, .next {
   cursor: pointer;
   position: absolute;
-  top: 50%;
+  top: 40%;
   width: auto;
   /* margin-top: -22px; */
   padding: 16px;
@@ -30,12 +30,12 @@
 }
 
 .prev {
-  left: 10px;
+  left: 30px;
 }
 
 /* Position the "next button" to the right */
 .next {
-  right: 0;
+  right: 30px;
   border-radius: 3px 0 0 3px;
   right: 10px;
 }
@@ -137,7 +137,7 @@
     padding: 0px;
     /* border: 2px solid red; */
     height: 100%;
-
+    bottom: 50px
 }  
 
 .columns_position {

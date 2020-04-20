@@ -95,10 +95,14 @@ def showGraph(communities, showTaxiTrips=True, saveFig='', cmap = 2, figsize=(18
     fig, ax = plt.subplots(1, 1, figsize=figsize)
     communities.plot(column='TAXI_TRIPS', ax=ax, legend=False, cmap=cmap)
 
+    # Add text with qty of taxi trips
     if showTaxiTrips:
         for idx, row in communities.iterrows():
-            plt.annotate(s= f"{row['AREA_NUMBE']}={row['TAXI_TRIPS']}",
-                xy=row['CENTER'], horizontalalignment='center')
+            plt.annotate(s= f"{row['TAXI_TRIPS']}"#f"{row['AREA_NUMBE']}={row['TAXI_TRIPS']}"
+                , xy=row['CENTER']
+                , horizontalalignment='center'
+                , backgroundcolor = 'white'
+                )
 
     if saveFig != '':
         print(f"Saving figure to: {saveFig}")

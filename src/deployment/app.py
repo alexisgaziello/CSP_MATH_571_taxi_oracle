@@ -28,30 +28,36 @@ spec.loader.exec_module(mp)
 communities = mp.loadCommunities()
 
 # Dataset
+print("\nLoading Datasets...")
 pathToDataSet = pathToDatasets + 'dataset_test.csv'
 df = pd.read_csv(pathToDataSet)
+
+minDate = df.iloc[0,].trip_start_timestamp[:10]
+maxDate = df.iloc[-1,].trip_start_timestamp[:10]
+defaultDate = df.iloc[int(len(df)/2),].trip_start_timestamp[:10]
+
 #df = df.drop(columns=['Unnamed: 0'],axis=1)
 
 # Models
 
 # Random Forest
-print("Loading Random Forest...")
+print("\nLoading Random Forest...")
 
-# model_randomForest = joblib.load(path_datasets+"/model/randomforest.pkl")
+model_randomForest = joblib.load(pathToDatasets+"/model/randomForest.pkl")
 
-# path_to_model = pathToSrc + f'{sep}models{sep}/randomForest/randomForest.py'
-# spec = importlib.util.spec_from_file_location("randomForest", path_to_model)
-# randomForest = importlib.util.module_from_spec(spec)
-# spec.loader.exec_module(randomForest)
+path_to_model = pathToSrc + f'{sep}models{sep}/randomForest/randomForest.py'
+spec = importlib.util.spec_from_file_location("randomForest", path_to_model)
+randomForest = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(randomForest)
 # Regression
-print("Loading Regression...")
+print("\nLoading Regression...")
 
 # Gradient BR
-print("Loading Gradient BR...")
+print("\nLoading Gradient BR...")
 
 
 # Neural Net
-print("Loading Neural Net...")
+print("\nLoading Neural Net...")
 # Model
 pathNeuralNet = pathToSrc + f'{sep}models{sep}neuralNet{sep}'
 
@@ -68,11 +74,14 @@ spec = importlib.util.spec_from_file_location("neuralNet", pathNeuralNet+'neural
 neuralNet = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(neuralNet)
 
+
+# Flask deployment
+
 app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    return render_template('index.html', minDate=minDate, maxDate=maxDate, defaultDate=defaultDate)
 
 @app.route('/predict',methods=['POST'])
 def predict():
@@ -87,7 +96,7 @@ def predict():
     seconds = '00'
     date = day + ' ' + hour + ':' + seconds
     
-    print(f"Predicting for :{date}")
+    print(f"\nPredicting for :{date}")
 
     # Transform to array X
     # X = randomForest.TransformDataToX(df, date)
@@ -103,10 +112,14 @@ def predict():
     real_img = mp.mapGenerator(real, communities=communities, saveByte=True) 
 
     # Random Forest
-
+    X = randomForest.TransformDataToX(df, date)
+    Y = model_randomForest.predict(X)
+    prediction = randomForest.TransformYToResult(Y)
+    randomForest_img = mp.mapGenerator(prediction, communities=communities, saveByte=True)
+    
     # Regression
 
-    # Gradient BR
+    # Gradient Boosting
 
     # Neural Net
     X = neuralNet.TransformDataToX(df, date)
@@ -114,19 +127,20 @@ def predict():
     prediction = neuralNet.TransformYToResult(Y)
     neuralNet_img = mp.mapGenerator(prediction, communities=communities, saveByte=True)
 
+
     # Random values
     # np.random.randint(1,200,77)
     result = real_img
     regression_img=result
-    randomForest_img = result
-    ensambling_img = result
+    # randomForest_img = result
+    gradientBoost_img = result
     # neuralNet_img = result
 
     return render_template('predict.html'
         , real=real_img
         , regression=regression_img
         , randomForest = randomForest_img
-        , ensambling = ensambling_img
+        , gradientBoost = gradientBoost_img
         , neuralNet = neuralNet_img)
 
 
