@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[52]:
-
-
 import pandas as pd
 import numpy as np
 
@@ -73,17 +70,12 @@ def TransformDataToX(df, date):
     return x
 
 
-# In[54]:
-
-
 def TransformYToResult(Y):
     Y = Y.clip(min = 0)/2
     result = np.round(Y).astype('int')
 
     return result 
 
-
-# In[ ]:
 
 
 
