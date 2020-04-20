@@ -40,7 +40,7 @@ def TransformDataToX(df, date):
     
     x = df[['pickup_community_area' ,'temperature', 'relative_humidity', 'wind_direction', 'wind_speed', 'precipitation_cat', 
                 'sky_level', 'daytype', 'Day Name', 'Month', 'Hour', 'Fare Last Month', 'Trips Last Hour',
-                'Trips Last Week (Same Hour)', 'Trips 2 Weeks Ago (Same Hour)', 'Quarter', 'Year', 'trip_start_timestamp']]
+                'Trips Last Week (Same Hour)', 'Trips 2 Weeks Ago (Same Hour)', 'Year', 'trip_start_timestamp']]
 
     categorical_variables = ['pickup_community_area', 'daytype', 'sky_level', 'Day Name', 'Month','Hour', 'Year']
     categories = [[*(range(1,78))], ['U', 'W', 'A'], ['OVC', 'BKN', 'SCT', 'FEW', 'CLR', 'VV '], 
