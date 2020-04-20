@@ -45,21 +45,31 @@ print("\nLoading Random Forest...")
 
 model_randomForest = joblib.load(pathToDatasets+"/model/randomForest.pkl")
 
-path_to_model = pathToSrc + f'{sep}models{sep}/randomForest/randomForest.py'
+path_to_model = pathToSrc + f'models{sep}/randomForest/randomForest.py'
 spec = importlib.util.spec_from_file_location("randomForest", path_to_model)
 randomForest = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(randomForest)
 # Regression
 print("\nLoading Regression...")
+model_regression = joblib.load(pathToDatasets + "/model/regression.pickle")
+
+path_to_model = pathToSrc + f'models{sep}/regression/regression.py'
+spec = importlib.util.spec_from_file_location("regression", path_to_model)
+regression = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(regression)
 
 # Gradient BR
 print("\nLoading Gradient BR...")
+model_gradientBoost = joblib.load(pathToDatasets+"/model/GBR.pickle")
 
+spec = importlib.util.spec_from_file_location("gradientBoost", pathToSrc + f'models{sep}/gradientBoost/gradientBoost.py')
+gradientBoost = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(gradientBoost)
 
 # Neural Net
 print("\nLoading Neural Net...")
 # Model
-pathNeuralNet = pathToSrc + f'{sep}models{sep}neuralNet{sep}'
+pathNeuralNet = pathToSrc + f'models{sep}neuralNet{sep}'
 
 # load json and create model
 json_file = open(pathNeuralNet + 'model_neural_network.json', 'r')
@@ -112,16 +122,28 @@ def predict():
     real_img = mp.mapGenerator(real, communities=communities, saveByte=True) 
 
     # Random Forest
+    print("Random Forest")
     X = randomForest.TransformDataToX(df, date)
     Y = model_randomForest.predict(X)
     prediction = randomForest.TransformYToResult(Y)
     randomForest_img = mp.mapGenerator(prediction, communities=communities, saveByte=True)
     
     # Regression
-
+    print("Regression")
+    X = randomForest.TransformDataToX(df, date)
+    Y = model_regression.predict(X)
+    prediction = regression.TransformYToResult(Y)
+    regression_img = mp.mapGenerator(prediction, communities=communities, saveByte=True)
+    
     # Gradient Boosting
-
+    print("Gradient Boosting")
+    X = randomForest.TransformDataToX(df, date)
+    Y = model_gradientBoost.predict(X)
+    prediction = gradientBoost.TransformYToResult(Y)
+    gradientBoost_img = mp.mapGenerator(prediction, communities=communities, saveByte=True)
+    
     # Neural Net
+    print("Neural Net")
     X = neuralNet.TransformDataToX(df, date)
     Y = model_neural_network.predict(X)
     prediction = neuralNet.TransformYToResult(Y)
@@ -130,10 +152,10 @@ def predict():
 
     # Random values
     # np.random.randint(1,200,77)
-    result = real_img
-    regression_img=result
+    # result = real_img
+    # regression_img=result
     # randomForest_img = result
-    gradientBoost_img = result
+    # gradientBoost_img = result
     # neuralNet_img = result
 
     return render_template('predict.html'
@@ -158,4 +180,4 @@ def results():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False)
