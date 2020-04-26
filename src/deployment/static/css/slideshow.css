@@ -48,8 +48,8 @@
 
 /* Caption text */
 .textSlides {
-  color: grey;
-  font-size: 15px;
+  color: rgb(70, 70, 70);
+  font-size: 25px;
   padding: 8px 12px;
   position: absolute;
   bottom: 12%;
