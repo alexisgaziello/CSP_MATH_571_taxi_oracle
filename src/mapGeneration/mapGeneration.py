@@ -64,7 +64,7 @@ def updateTaxiTrips(communities, taxiTrips, **kwargs):
     return showGraph(communities, **kwargs)
 
 
-def showGraph(communities, showTaxiTrips=True, saveFig='', cmap = 2, figsize=(18,18), saveByte=False):
+def showGraph(communities, showTaxiTrips=True, saveFig='', cmap = 2, figsize=(18,18), saveByte=False, legend=False):
     # Color stuff
     if cmap == 0:
         cmap = "OrRd"
@@ -93,7 +93,7 @@ def showGraph(communities, showTaxiTrips=True, saveFig='', cmap = 2, figsize=(18
     
     # FIGURE SIZE
     fig, ax = plt.subplots(1, 1, figsize=figsize)
-    communities.plot(column='TAXI_TRIPS', ax=ax, legend=False, cmap=cmap)
+    communities.plot(column='TAXI_TRIPS', ax=ax, legend=legend, cmap=cmap)
 
     # Add text with qty of taxi trips
     if showTaxiTrips:
