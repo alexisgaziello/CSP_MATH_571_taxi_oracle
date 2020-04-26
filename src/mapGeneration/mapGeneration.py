@@ -74,8 +74,6 @@ def showGraph(communities, showTaxiTrips=True, saveFig='', cmap = 2, figsize=(18
         cmap = "seismic"
     elif cmap == 3:
         cmap =  "Greys"
-    else:
-        cmap = "BuPu"
 
     if saveByte:
         plt.switch_backend('Agg')
