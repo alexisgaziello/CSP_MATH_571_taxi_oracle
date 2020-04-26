@@ -120,6 +120,20 @@ def showGraph(communities, showTaxiTrips=True, saveFig='', cmap = 2, figsize=(18
 
 def mapGenerator(taxiTrips, communities = None, **kwargs):
     
+    if type(taxiTrips) is dict:
+        array = []
+        counter = 1
+        while(len(array) < 77):
+            # Check if value exists
+            if counter in taxiTrips:
+                array += [taxiTrips[counter]]
+            else:
+                array += [0]
+            
+            counter += 1
+        taxiTrips = array
+
+
     if communities is None:
         communities = loadCommunities()
 
@@ -132,19 +146,6 @@ def mapGenerator(taxiTrips, communities = None, **kwargs):
         for taxiTripsMap in taxiTrips:
             return updateTaxiTrips(communities, taxiTripsMap, **kwargs)
 
-def mapGeneratorFromDict(myDict, **kwargs):
-    array = []
-    counter = 1
-    while(len(array) < 77):
-        # Check if value exists
-        if counter in myDict:
-            array += [myDict[counter]]
-        else:
-            array += [0]
-        
-        counter += 1
-
-    return mapGenerator(array, **kwargs)
 
 if __name__ == "__main__":
     taxiTrips = np.random.randint(1,50,77)    
