@@ -45,7 +45,7 @@ print("\nLoading Random Forest...")
 
 model_randomForest = joblib.load(pathToDatasets+f"{sep}model{sep}randomForest.pkl")
 
-path_to_model = pathToSrc + f'models{sep}randomForest{sep}randomForest.py'
+path_to_model = pathToSrc + f'deployment{sep}models_bindings{sep}randomForest{sep}randomForest.py'
 spec = importlib.util.spec_from_file_location("randomForest", path_to_model)
 randomForest = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(randomForest)
@@ -53,7 +53,7 @@ spec.loader.exec_module(randomForest)
 print("\nLoading Regression...")
 model_regression = joblib.load(pathToDatasets + "/model/regression.pickle")
 
-path_to_model = pathToSrc + f'models{sep}regression/regression.py'
+path_to_model = pathToSrc + f'deployment{sep}models_bindings{sep}regression/regression.py'
 spec = importlib.util.spec_from_file_location("regression", path_to_model)
 regression = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(regression)
@@ -62,14 +62,14 @@ spec.loader.exec_module(regression)
 print("\nLoading Gradient BR...")
 model_gradientBoost = joblib.load(pathToDatasets+"/model/GBR.pickle")
 
-spec = importlib.util.spec_from_file_location("gradientBoost", pathToSrc + f'models{sep}gradientBoost/gradientBoost.py')
+spec = importlib.util.spec_from_file_location("gradientBoost", pathToSrc + f'deployment{sep}models_bindings{sep}gradientBoost/gradientBoost.py')
 gradientBoost = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(gradientBoost)
 
 # Neural Net
 print("\nLoading Neural Net...")
 # Model
-pathNeuralNet = pathToSrc + f'models{sep}neuralNet{sep}'
+pathNeuralNet = pathToSrc + f'deployment{sep}models_bindings{sep}neuralNet{sep}'
 
 # load json and create model
 json_file = open(pathNeuralNet + 'model_neural_network.json', 'r')
